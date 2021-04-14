@@ -3,6 +3,7 @@ from binary_difference.calculate import calculate_difference, make_diff_file
 from binary_difference.recover import recover, make_recovery
 from binary_difference.utils.filenames import make_diff_name, make_recovery_name
 import filecmp
+from typing import TextIO, Callable, NoReturn
 
 FILE1 = 'file1'
 FILE2 = 'file2'
@@ -12,9 +13,7 @@ RECOVER_FILE = 'file2_recovered'
 PATH = '/Users/mplobanov/PycharmProjects/binary_diff/tests/files/'
 
 
-def generate_files():
-    old_file = open(PATH + FILE1, 'w')
-    new_file = open(PATH + FILE2, 'w')
+def number_generator(old_file: TextIO, new_file: TextIO) -> NoReturn:
     for i in range(10):
         x = randint(0, 9)
         old_file.write(str(x))
@@ -22,6 +21,27 @@ def generate_files():
             new_file.write(str(x))
         else:
             new_file.write(str(randint(0, 9)))
+
+
+def diff_len_generator(old_file: TextIO, new_file: TextIO) -> NoReturn:
+    for i in range(10):
+        x = randint(0, 9)
+        old_file.write(str(x))
+        if choice([1, 0]):
+            new_file.write(str(x))
+        else:
+            pass
+
+
+Generators = [number_generator, diff_len_generator]
+
+
+def generate_files(generator: Callable[[TextIO, TextIO], NoReturn] = number_generator):
+    old_file = open(PATH + FILE1, 'w')
+    new_file = open(PATH + FILE2, 'w')
+
+    generator(old_file, new_file)
+
     old_file.write('\n')
     new_file.write('\n')
     old_file.close()
@@ -62,19 +82,21 @@ def manual_cmp(f1, f2):
 
 
 def test_basics():
-    generate_files()
+    for generator in Generators:
+        generate_files(generator)
 
-    direct_calc_diff(calculate_difference)
+        direct_calc_diff(calculate_difference)
 
-    direct_recover(recover)
+        direct_recover(recover)
 
-    assert filecmp.cmp(PATH + FILE2, PATH + RECOVER_FILE)
+        assert filecmp.cmp(PATH + FILE2, PATH + RECOVER_FILE)
 
-    manual_cmp(PATH + FILE2, PATH + RECOVER_FILE)
+        manual_cmp(PATH + FILE2, PATH + RECOVER_FILE)
 
 
 def test_make_file_diff():
-    generate_files()
-    make_diff_file(FILE1, FILE2, path=PATH)
-    make_recovery(FILE1, make_diff_name(FILE1, FILE2), path=PATH)
-    manual_cmp(PATH + FILE2, PATH + make_recovery_name(FILE2))
+    for generator in Generators:
+        generate_files(generator)
+        make_diff_file(FILE1, FILE2, path=PATH)
+        make_recovery(FILE1, make_diff_name(FILE1, FILE2), path=PATH)
+        manual_cmp(PATH + FILE2, PATH + make_recovery_name(FILE2))
