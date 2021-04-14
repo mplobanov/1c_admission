@@ -10,3 +10,8 @@ def recover(old_file: BinaryIO, diff_file: BinaryIO, new_file: BinaryIO):
         else:
             new_file.write(diff_byte)
         old_byte = old_file.read(1)
+
+
+def make_recovery(old_name: str, diff_name: str, path: str = ''):
+    # check for valid name
+    pass
