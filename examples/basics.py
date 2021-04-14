@@ -1,6 +1,5 @@
-from binary_difference.big_files import calculate_difference
-from binary_difference.recover import recover
-
+from binary_difference.big_recover.big_files import calculate_difference
+from binary_difference.big_recover.big_recover import recover
 
 old_file = open('files/file1', 'rb')
 new_file = open('files/file2', 'rb')
