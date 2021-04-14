@@ -11,3 +11,13 @@ def calculate_difference(old_file: BinaryIO, new_file: BinaryIO, diff_file: Bina
             diff_file.write(b'\x00')
         else:
             diff_file.write(byte2)
+
+
+def make_diff_file(old_name: str, new_name: str, path: str = ''):
+    old_file = open(path + old_name, 'rb')
+    new_file = open(path + new_name, 'rb')
+    diff_file = open(path + '{}->{}.diff'.format(old_name, new_name), 'wb')
+    calculate_difference(old_file, new_file, diff_file)
+    old_file.close()
+    new_file.close()
+    diff_file.close()
