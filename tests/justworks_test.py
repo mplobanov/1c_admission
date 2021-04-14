@@ -1,6 +1,6 @@
 from random import choice, randint
 from binary_difference.calculate import calculate_difference
-from binary_difference.recogit ver import recover
+from binary_difference.recover import recover
 import os
 
 
