@@ -1,4 +1,4 @@
-from binary_difference.calculate import calculate_difference
+from binary_difference.big_files import calculate_difference
 from binary_difference.recover import recover
 
 

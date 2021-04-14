@@ -1,13 +1,21 @@
+from copy import copy
+
+
 class BasicDifferentiator:
-    def __init__(self, batch_size: int):
-        self.batch_size = 1024
+    def __init__(self):
         pass
 
     # makes part of diff file
-    def make_diff_batch(self, old_batch: bytes, new_batch: bytes) -> bytes:
-        assert len(old_batch) == self.batch_size == len(new_batch)
-        return bytes(0)
+    def get_diff(self, old: bytes, new: bytes) -> bytes:
+        ans = copy(bytearray(new))
+        for i in range(len(old)):
+            if old[i] == ans[i]:
+                ans[i] = 0
+        return bytes(ans)
 
-    def get_recovered_batch(self, old_batch: bytes, diff_batch: bytes) -> bytes:
-        assert len(old_batch) == self.batch_size
-        return bytes(0)
+    def get_recovered(self, old: bytes, diff: bytes) -> bytes:
+        ans = copy(bytearray(diff))
+        for i in range(len(old)):
+            if ans[i] == 0:
+                ans[i] = old[i]
+        return ans

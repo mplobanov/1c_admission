@@ -1,4 +1,5 @@
 from typing import BinaryIO
+from .differentiators.basic import BasicDifferentiator
 
 
 def calculate_difference(old_file: BinaryIO, new_file: BinaryIO, diff_file: BinaryIO):
@@ -21,3 +22,4 @@ def make_diff_file(old_name: str, new_name: str, path: str = ''):
     old_file.close()
     new_file.close()
     diff_file.close()
+
