@@ -1,6 +1,7 @@
 from random import choice, randint
-from binary_difference.calculate import calculate_difference
-from binary_difference.recover import recover
+from binary_difference.calculate import calculate_difference, make_diff_file
+from binary_difference.recover import recover, make_recovery
+from binary_difference.utils.filenames import make_diff_name, make_recovery_name
 import filecmp
 
 FILE1 = 'file1'
@@ -56,6 +57,8 @@ def manual_cmp(f1, f2):
         assert b1 == b2
         if b1 == b'':
             break
+    recovered_file.close()
+    new_file.close()
 
 
 def test_basics():
@@ -68,3 +71,10 @@ def test_basics():
     assert filecmp.cmp(PATH + FILE2, PATH + RECOVER_FILE)
 
     manual_cmp(PATH + FILE2, PATH + RECOVER_FILE)
+
+
+def test_make_file_diff():
+    generate_files()
+    make_diff_file(FILE1, FILE2, path=PATH)
+    make_recovery(FILE1, make_diff_name(FILE1, FILE2), path=PATH)
+    manual_cmp(PATH + FILE2, PATH + make_recovery_name(FILE2))
