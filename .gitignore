@@ -1,4 +1,6 @@
 /tests/files/
 /examples/files/
-/.idea/
+.idea/
 /venv/
+.coverage
+/htmlcov/
