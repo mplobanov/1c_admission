@@ -1,20 +1,17 @@
 from random import choice, randint
 from binary_difference.calculate import calculate_difference
 from binary_difference.recover import recover
-import os
+import filecmp
+
+FILE1 = 'file1'
+FILE2 = 'file2'
+DIFF_FILE = 'file1_diff_file2'
+RECOVER_FILE = 'file2_recovered'
+
+PATH = '/Users/mplobanov/PycharmProjects/binary_diff/tests/files/'
 
 
-FILE1 = 'examples/files/file1'
-FILE2 = 'examples/files/file2'
-DIFF_FILE = 'examples/files/file1_diff_file2'
-RECOVER_FILE = 'examples/files/file2_recovered'
-
-PATH = '/Users/mplobanov/PycharmProjects/binary_diff/'
-# PATH = ''
-
-
-def test_basics():
-    print('HELL', os.getcwd())
+def generate_files():
     old_file = open(PATH + FILE1, 'w')
     new_file = open(PATH + FILE2, 'w')
     for i in range(10):
@@ -29,27 +26,45 @@ def test_basics():
     old_file.close()
     new_file.close()
 
+
+def direct_calc_diff(calc_func):
     old_file = open(PATH + FILE1, 'rb')
     new_file = open(PATH + FILE2, 'rb')
     diff_file = open(PATH + DIFF_FILE, 'wb')
-    calculate_difference(old_file, new_file, diff_file)
+    calc_func(old_file, new_file, diff_file)
     old_file.close()
     new_file.close()
     diff_file.close()
 
+
+def direct_recover(recover_func):
     old_file = open(PATH + FILE1, 'rb')
     diff_file = open(PATH + DIFF_FILE, 'rb')
     recovered_file = open(PATH + RECOVER_FILE, 'wb')
-    recover(old_file, diff_file, recovered_file)
+    recover_func(old_file, diff_file, recovered_file)
     old_file.close()
     diff_file.close()
     recovered_file.close()
 
-    recovered_file = open(PATH + RECOVER_FILE, 'rb')
-    new_file = open(PATH + FILE2, 'rb')
+
+def manual_cmp(f1, f2):
+    recovered_file = open(f1, 'rb')
+    new_file = open(f2, 'rb')
     while True:
         b1 = recovered_file.read(1)
         b2 = new_file.read(1)
         assert b1 == b2
         if b1 == b'':
             break
+
+
+def test_basics():
+    generate_files()
+
+    direct_calc_diff(calculate_difference)
+
+    direct_recover(recover)
+
+    assert filecmp.cmp(PATH + FILE2, PATH + RECOVER_FILE)
+
+    manual_cmp(PATH + FILE2, PATH + RECOVER_FILE)
