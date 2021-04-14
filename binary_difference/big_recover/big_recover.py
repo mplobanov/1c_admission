@@ -1,5 +1,5 @@
 from typing import BinaryIO
-from .utils.filenames import *
+from binary_difference.utils.filenames import *
 
 
 def recover(old_file: BinaryIO, diff_file: BinaryIO, new_file: BinaryIO):

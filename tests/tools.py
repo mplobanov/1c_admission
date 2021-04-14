@@ -1,8 +1,4 @@
 from random import choice, randint
-from binary_difference.big_files import calculate_difference, make_diff_file
-from binary_difference.recover import recover, make_recovery
-from binary_difference.utils.filenames import make_diff_name, make_recovery_name
-import filecmp
 from typing import TextIO, Callable, NoReturn
 
 FILE1 = 'file1'

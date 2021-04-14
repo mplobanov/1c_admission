@@ -1,5 +1,5 @@
 from typing import BinaryIO
-from .differentiators.basic import BasicDifferentiator
+from binary_difference.differentiators.basic import BasicDifferentiator
 
 
 def calculate_difference(old_file: BinaryIO, new_file: BinaryIO, diff_file: BinaryIO):
