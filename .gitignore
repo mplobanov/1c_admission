@@ -1,3 +1,4 @@
 /tests/files/
 /examples/files/
-/.idea
+/.idea/
+/venv/
