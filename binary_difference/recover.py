@@ -1,4 +1,5 @@
 from typing import BinaryIO
+from .utils.filenames import *
 
 
 def recover(old_file: BinaryIO, diff_file: BinaryIO, new_file: BinaryIO):
@@ -14,4 +15,14 @@ def recover(old_file: BinaryIO, diff_file: BinaryIO, new_file: BinaryIO):
 
 def make_recovery(old_name: str, diff_name: str, path: str = ''):
     # check for valid name
-    pass
+    assert check_diff_name(old_name, diff_name)
+
+    old_file = open(path + old_name, 'rb')
+    diff_file = open(path + diff_name, 'rb')
+    recovery_file = open(path + make_recovery_name(get_new_filename(old_name, diff_name)), 'wb')
+
+    recover(old_file, diff_file, recovery_file)
+
+    old_file.close()
+    diff_file.close()
+    recovery_file.close()
