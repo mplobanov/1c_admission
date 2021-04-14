@@ -1,0 +1,7 @@
+/tests/files/
+/examples/files/
+.idea/
+/venv/
+.coverage
+/htmlcov/
+coverage.sh
